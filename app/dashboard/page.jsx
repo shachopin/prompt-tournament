@@ -7,7 +7,7 @@ import { formatRelativeTime } from '@/lib/utils'
 import { ISSUE_STATUS, ISSUE_PRIORITY } from '@/db/schema'
 
 export default async function DashboardPage() {
-  await getCurrentUser() //not necessary here, but adding here just to prove concept of cache in the same request
+  //await getCurrentUser() //not necessary here, but adding here just to prove concept of cache in the same request
   const issues = await getIssues()
 
   return (
