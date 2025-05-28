@@ -3,7 +3,7 @@
 import { useState, useLayoutEffect } from 'react'
 
 export function Timestamp() {
-  const [time, setTime] = useState<number | null>(null)
+  const [time, setTime] = useState(null)
   useLayoutEffect(() => {
     // You can determine when and how often to update
     // the time here. In this example we update it only once

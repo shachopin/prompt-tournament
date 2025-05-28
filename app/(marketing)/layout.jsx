@@ -7,8 +7,6 @@ import Button from '../components/ui/Button'
 
 export default async function MarketingLayout({
   children,
-}: {
-  children: React.ReactNode
 }) {
   return (
     <div className="flex min-h-screen flex-col">
