@@ -64,7 +64,7 @@ export default async function MarketingLayout({
             <div>
               <h3 className="text-lg font-semibold mb-4">Mode</h3>
               <p className="text-sm text-gray-600">
-                A modern project management tool built with Next.js.
+                This is a modern project management tool built with Next.js.
               </p>
             </div>
             <div>
