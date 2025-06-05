@@ -48,9 +48,10 @@ export default function IssueForm({
       // Handle successful submission
       if (result.success) {
         router.refresh()
-        if (!isEditing) {
-          router.push('/dashboard')
-        }
+        // if (!isEditing) {
+        //   router.push('/dashboard')
+        // }
+        router.push('/dashboard') //for both create issue and edit issue flow, we go back to dashboard
       }
 
       return result
