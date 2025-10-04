@@ -14,7 +14,7 @@ export default async function MarketingLayout({
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-8">
             <Link href="/" className="text-xl font-bold">
-              Mode
+              Prompt Comparison
             </Link>
             <nav className="hidden md:flex gap-6">
               <Link
