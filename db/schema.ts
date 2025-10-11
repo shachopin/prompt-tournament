@@ -42,6 +42,10 @@ export const usersRelations = relations(users, ({ many }) => ({
   issues: many(issues),
 }))
 
+// Types
+export type Issue = InferSelectModel<typeof issues>
+export type User = InferSelectModel<typeof users>
+
 // Status and priority labels for display
 export const ISSUE_STATUS = {
   backlog: { label: 'Backlog', value: 'backlog' },

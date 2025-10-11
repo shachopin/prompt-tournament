@@ -6,8 +6,8 @@ import * as schema from './schema'
 
 export const db = process.env.VERCEL
   ? drizzleNeon({
-      client: neon(process.env.DATABASE_URL),
+      client: neon(process.env.DATABASE_URL!),
       schema,
       casing: 'snake_case',
     })
-  : drizzlePostgres(process.env.DATABASE_URL, { schema, casing: 'snake_case' })
+  : drizzlePostgres(process.env.DATABASE_URL!, { schema, casing: 'snake_case' })
