@@ -7,28 +7,15 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card } from "@/components/ui/card"
 import { Plus, Trash2, Trophy } from "lucide-react"
-//import type { Prompt } from "@/app/page"
+import type { Prompt } from "@/app/prompt/page"
 
-
-
-function isPowerOfTwo(n) {
-  // A number must be positive to be a power of two (2^0 = 1, 2^1 = 2, etc.)
-  // Also, 0 is not considered a power of two in this context.
-  if (n <= 0) {
-    return false;
-  }
-
-  // A power of two in binary has only one bit set (e.g., 1 (0001), 2 (0010), 4 (0100), 8 (1000)).
-  // Subtracting 1 from a power of two flips all bits from the rightmost set bit to the right (e.g., 8 (1000) - 1 = 7 (0111)).
-  // Performing a bitwise AND operation between a power of two and (that number - 1) will result in 0.
-  // For example: 8 (1000) & 7 (0111) = 0.
-  // Any other positive number will not result in 0 (e.g., 6 (0110) & 5 (0101) = 4 (0100)).
-  return (n & (n - 1)) === 0;
+type TournamentSetupProps = {
+  onStart: (prompts: Prompt[], question: string) => void
 }
 
-export function TournamentSetup({ onStart = (...args) => {console.log(args)} }) {
+export function TournamentSetup({ onStart }: TournamentSetupProps) {
   const [question, setQuestion] = useState("")
-  const [prompts, setPrompts] = useState([
+  const [prompts, setPrompts] = useState<Prompt[]>([
     { id: "1", name: "Prompt 1", content: "" },
     { id: "2", name: "Prompt 2", content: "" },
     { id: "3", name: "Prompt 3", content: "" },
@@ -62,7 +49,7 @@ export function TournamentSetup({ onStart = (...args) => {console.log(args)} }) 
     }
 
     // Ensure even number of prompts for tournament bracket
-    if (!isPowerOfTwo(validPrompts.length)) {
+    if (validPrompts.length % 2 !== 0) {
       alert("Please enter an even number of prompts (2, 4, 8, 16, etc.)")
       return
     }

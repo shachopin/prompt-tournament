@@ -5,8 +5,8 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Loader2, Eye } from "lucide-react"
 import { useState, useEffect } from "react"
-import type { Match, Prompt } from "@/app/page"
-import { generatePromptResponse } from "@/app/actions"
+import type { Match, Prompt } from "@/app/prompt/page"
+import { generatePromptResponse } from "@/app/prompt/actions"
 
 type ComparisonViewProps = {
   match: Match

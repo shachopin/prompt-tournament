@@ -1,1 +1,1 @@
-next.js app
+next.js app for prompt comparison

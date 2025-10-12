@@ -59,3 +59,4 @@ export const ISSUE_PRIORITY = {
   medium: { label: 'Medium', value: 'medium' },
   high: { label: 'High', value: 'high' },
 }
+//this file needs to be ts, other npm run db:push will fail, it's looking for scheme.ts
