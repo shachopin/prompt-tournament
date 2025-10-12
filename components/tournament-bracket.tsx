@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Trophy, ArrowLeft, Crown } from "lucide-react"
-import type { Match } from "@/app/prompt/page"
+import type { Match } from "@/app/(prompt)/page"
 
 type TournamentBracketProps = {
   matches: Match[]
@@ -16,8 +16,9 @@ type TournamentBracketProps = {
 export function TournamentBracket({ matches, question, onStartMatch, onReset }: TournamentBracketProps) {
   const maxRound = Math.max(...matches.map((m) => m.round))
   const rounds = Array.from({ length: maxRound }, (_, i) => i + 1)
-
-  const winner = matches.find((m) => m.round === maxRound && m.winner !== null)?.winner
+  
+  const matchCountMaxRound = matches.filter(m => m.round === maxRound).length
+  const winner = matchCountMaxRound === 1 && matches.find((m) => m.round === maxRound && m.winner !== null)?.winner
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">

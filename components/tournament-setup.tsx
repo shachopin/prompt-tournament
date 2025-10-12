@@ -7,10 +7,14 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card } from "@/components/ui/card"
 import { Plus, Trash2, Trophy } from "lucide-react"
-import type { Prompt } from "@/app/prompt/page"
+import type { Prompt } from "@/app/(prompt)/page"
 
 type TournamentSetupProps = {
   onStart: (prompts: Prompt[], question: string) => void
+}
+
+function isPowerOfTwo(n) {
+  return n > 0 && (n & (n - 1)) === 0;
 }
 
 export function TournamentSetup({ onStart }: TournamentSetupProps) {
@@ -49,8 +53,8 @@ export function TournamentSetup({ onStart }: TournamentSetupProps) {
     }
 
     // Ensure even number of prompts for tournament bracket
-    if (validPrompts.length % 2 !== 0) {
-      alert("Please enter an even number of prompts (2, 4, 8, 16, etc.)")
+    if (!isPowerOfTwo(validPrompts.length)) {
+      alert("Please enter a number that's power of 2 (2, 4, 8, 16, etc.)")
       return
     }
 
