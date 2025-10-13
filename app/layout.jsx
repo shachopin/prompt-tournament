@@ -8,8 +8,8 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'Mode',
-  description: 'A modern issue tracking application built with Next.js 15',
+  title: 'Prompt Tournament',
+  description: 'A modern prompt comparison application built with Next.js 15',
 }
 
 export default function RootLayout({
