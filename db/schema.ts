@@ -60,3 +60,11 @@ export const ISSUE_PRIORITY = {
   high: { label: 'High', value: 'high' },
 }
 //this file needs to be ts, other npm run db:push will fail, it's looking for scheme.ts
+
+export const prompts = pgTable('prompts', {
+  id: text('id').primaryKey(),
+  content: text('content').notNull(),
+  response: text('response'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})

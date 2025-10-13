@@ -1,6 +1,10 @@
 "use server"
 
+import { openai } from '@ai-sdk/openai';
 import { generateText } from "ai"
+import { db } from '@/db'
+import { prompts } from '@/db/schema'
+import { eq } from 'drizzle-orm'
 
 export async function generatePromptResponse(
   systemPrompt: string,
@@ -8,7 +12,7 @@ export async function generatePromptResponse(
 ): Promise<{ response: string; error?: string }> {
   try {
     const { text } = await generateText({
-      model: "openai/gpt-4o-mini",
+      model: openai("gpt-4o-mini"),
       messages: [
         {
           role: "system",
@@ -28,6 +32,43 @@ export async function generatePromptResponse(
     return {
       response: "",
       error: error instanceof Error ? error.message : "Failed to generate response",
+    }
+  }
+}
+
+export async function createPrompt(data) {
+  try {
+    await db.insert(prompts).values({
+      content: data.content,
+      response: data.response,
+      //userId: validatedData.userId,
+    })
+    return { success: true, message: 'Prompt created successfully' }
+  } catch (error) {
+    console.error('Error creating prompt:', error)
+    return {
+      success: false,
+      message: 'An error occurred while creating the prompt',
+      error: 'Failed to create prompt',
+    }
+  }
+}
+
+export async function getPrompt(id) {
+  try {
+    const result = await db.query.prompts.findFirst({
+      where: eq(prompts.id, id),
+      // with: {
+      //   user: true,
+      // },
+    })
+    return result;
+  } catch (error) {
+    console.error(`Error fetching prompt ${id}:`, error)
+    return {
+      success: false,
+      message: 'An error occurred while getting the prompt',
+      error: 'Failed to get the prompt',
     }
   }
 }

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Loader2, Eye } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { Match, Prompt } from "@/app/(prompt)/page"
-import { generatePromptResponse } from "@/app/(prompt)/actions"
+import { generatePromptResponse, createPrompt, getPrompt } from "@/app/(prompt)/actions"
 
 type ComparisonViewProps = {
   match: Match
@@ -28,20 +28,29 @@ export function ComparisonView({ match, question, onSelectWinner, onBack, isRevi
   useEffect(() => {
     const fetchResponses = async () => {
       if (!match.prompt1 || !match.prompt2) return
-
       // Fetch both responses in parallel
-      const [result1, result2] = await Promise.all([
-        generatePromptResponse(match.prompt1.content, question),
-        generatePromptResponse(match.prompt2.content, question),
-      ])
+      const prompt1Id = match.prompt1.id;
+      const prompt2Id = match.prompt2.id;
+      console.log(await getPrompt(prompt1Id));
+      let [result1, result2] = await Promise.all([await getPrompt(prompt1Id), await getPrompt(prompt2Id)])
 
+      if (!result1) {
+        result1 = await generatePromptResponse(match.prompt1.content, question);
+      }
+
+      if (!result2) {
+        result2 = await generatePromptResponse(match.prompt2.content, question);
+      }
+  
       setResponse1(result1.response)
       setError1(result1.error || "")
       setLoading1(false)
-
+      if (!result1.error) {await createPrompt(match.prompt1)}
+   
       setResponse2(result2.response)
       setError2(result2.error || "")
       setLoading2(false)
+      if (!result2.error) {await createPrompt(match.prompt2)}
     }
 
     fetchResponses()
