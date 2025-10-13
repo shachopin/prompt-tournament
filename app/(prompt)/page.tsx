@@ -4,6 +4,7 @@ import { useState } from "react"
 import { TournamentSetup } from "@/components/tournament-setup"
 import { TournamentBracket } from "@/components/tournament-bracket"
 import { ComparisonView } from "@/components/comparison-view"
+import { clearAllPrompts } from "@/app/(prompt)/actions"
 
 export type Prompt = {
   id: string
@@ -98,6 +99,7 @@ export default function Home() {
     setMatches([])
     setCurrentMatch(null)
     setIsReviewMode(false)
+    clearAllPrompts();
   }
 
   const handleBackFromReview = () => {

@@ -1,47 +1,43 @@
 "use server"
 
-import { openai } from '@ai-sdk/openai';
-import { generateText } from "ai"
+
 import { db } from '@/db'
 import { prompts } from '@/db/schema'
 import { eq } from 'drizzle-orm'
+import { OpenAI } from 'langchain/llms/openai'
+import { PromptTemplate} from 'langchain/prompts'
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
-export async function generatePromptResponse(
-  systemPrompt: string,
-  userQuestion: string,
-): Promise<{ response: string; error?: string }> {
-  try {
-    const { text } = await generateText({
-      model: openai("gpt-4o-mini"),
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt,
-        },
-        {
-          role: "user",
-          content: userQuestion,
-        },
-      ],
-      temperature: 0.7,
-    })
+export const askAI = async (prompt, question) => {
+  const input = await getLangPrompt(prompt, question)
+  const model = new OpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' })
+  const output = await model.call(input)
+  console.log(output)
+  return { response: output }
+}
 
-    return { response: text }
-  } catch (error) {
-    console.error("[v0] Error generating response:", error)
-    return {
-      response: "",
-      error: error instanceof Error ? error.message : "Failed to generate response",
-    }
-  }
+const getLangPrompt = async (prompt, question) => {
+ 
+  const chatPromptTemplate = ChatPromptTemplate.fromMessages([
+    ["system", "Adhere to this background information no matter what! {prompt}"],
+    ["user", "I want to ask {question}?"],
+  ]);
+
+  // Invoke the template with your question/inputs
+  const formattedChatPrompt = await chatPromptTemplate.format({
+    prompt, question
+  });
+  
+  return formattedChatPrompt;
+
 }
 
 export async function createPrompt(data) {
   try {
     await db.insert(prompts).values({
+      id: data.id,
       content: data.content,
       response: data.response,
-      //userId: validatedData.userId,
     })
     return { success: true, message: 'Prompt created successfully' }
   } catch (error) {
@@ -72,3 +68,9 @@ export async function getPrompt(id) {
     }
   }
 }
+
+export async function clearAllPrompts() {
+  await db.delete(prompts);
+  console.log('All items cleared from the users table.');
+}
+
